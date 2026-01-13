@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/GLTFLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 let mixer: THREE.AnimationMixer;
 let actions: any = {};
@@ -7,7 +7,7 @@ let active = "";
 
 export async function loadFighter(scene: THREE.Scene) {
   const loader = new GLTFLoader();
-  const gltf = await loader.loadAsync("/game/models/boxer.glb");
+  const gltf = await loader.loadAsync("../models/boxer.glb");
 
   const model = gltf.scene;
   model.position.set(0, 0, 0);
@@ -15,10 +15,6 @@ export async function loadFighter(scene: THREE.Scene) {
   scene.add(model);
 
   mixer = new THREE.AnimationMixer(model);
-
-  gltf.animations.forEach((clip) => {
-    actions[clip.name.toLowerCase()] = mixer.clipAction(clip);
-  });
 
   play("idle");
 }
