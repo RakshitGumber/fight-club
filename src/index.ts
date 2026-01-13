@@ -5,7 +5,7 @@ const app = new Elysia()
   .use(
     await staticPlugin({
       prefix: "/",
-      assets: "web/routes",
+      assets: "public/routes",
     })
   )
   .listen(3000);
