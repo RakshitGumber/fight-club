@@ -1,11 +1,15 @@
 import * as THREE from "three";
+import { startCamera, poseData } from "./mediapipe";
+import { updateCombat, playerMove } from "./combat";
 
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
+let skeletonLines: THREE.LineSegments;
 
 export function start() {
   initScene();
+  startCamera();
   animate();
 }
 
@@ -60,6 +64,12 @@ function initScene() {
   ring.position.y = 0.01;
   scene.add(ring);
 
+  // Skeleton
+  const mat = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+  const geo = new THREE.BufferGeometry();
+  skeletonLines = new THREE.LineSegments(geo, mat);
+  scene.add(skeletonLines);
+
   // Resize handler
   window.addEventListener("resize", onResize);
 }
@@ -70,10 +80,54 @@ function onResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+function updateSkeleton() {
+  if (!poseData || !poseData.landmarks) return;
+
+  const lm = poseData.landmarks[0];
+  if (!lm) return;
+
+  const points: number[] = [];
+
+  const pairs = [
+    [11, 13],
+    [13, 15], // left arm
+    [12, 14],
+    [14, 16], // right arm
+    [11, 12], // shoulders
+    [23, 24], // hips
+    [11, 23],
+    [12, 24], // torso
+  ];
+
+  for (const [a, b] of pairs) {
+    const p1 = lm[a];
+    const p2 = lm[b];
+
+    points.push(
+      (p1.x - 0.5) * 4,
+      2 - p1.y * 3,
+      -p1.z,
+      (p2.x - 0.5) * 4,
+      2 - p2.y * 3,
+      -p2.z
+    );
+  }
+
+  skeletonLines.geometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(points, 3)
+  );
+}
+
 function animate() {
   requestAnimationFrame(animate);
 
-  // Later: physics, animation, AI, MediaPipe here
+  updateCombat();
 
+  if (playerMove !== "IDLE") {
+    console.log(playerMove);
+  }
+
+  updateSkeleton();
   renderer.render(scene, camera);
 }

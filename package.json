@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@elysiajs/static": "1.4.7",
+    "@mediapipe/tasks-vision": "^0.10.22-rc.20250304",
     "@types/three": "^0.182.0",
     "elysia": "^1.4.16",
     "react": "^19.2.3",
