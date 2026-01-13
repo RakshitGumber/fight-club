@@ -1,16 +1,16 @@
 import * as THREE from "three";
 import { startCamera, poseData } from "./mediapipe";
 import { updateCombat, playerMove } from "./combat";
-import { loadFighter, updateFighter, play } from "./fighter";
+import { createPlayer, updatePlayer } from "./fighter";
 
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
 let skeletonLines: THREE.LineSegments;
 
-export async function start() {
-  await loadFighter(scene);
+export function start() {
   initScene();
+  createPlayer(scene);
   startCamera();
   animate();
 }
@@ -123,6 +123,7 @@ function updateSkeleton() {
 
 function animate() {
   requestAnimationFrame(animate);
+  updatePlayer();
 
   updateCombat();
 
