@@ -1,10 +1,10 @@
 {
-  "name": "boxing-fever",
+  "name": "unreal-boxing",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --hot ./src/index.ts",
-    "build": "bun build --compile --target bun --outfile server src/index.ts"
+    "dev": "bun run --hot ./server/index.ts",
+    "build": "bun build --compile --target bun --outfile built ./server/index.ts"
   },
   "dependencies": {
     "@elysiajs/static": "1.4.7",
