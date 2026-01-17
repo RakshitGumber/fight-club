@@ -105,7 +105,8 @@
     "paths": {
       "@server": ["./server/index.ts"],
       "@server/*": ["./server/*"],
-      "@web/*": ["./web/*"]
+      "@web/*": ["./web/*"],
+      "@engine/*": ["./engine/*"]
     }
   }
 }
